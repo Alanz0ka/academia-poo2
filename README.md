@@ -1,6 +1,6 @@
 # Academia: cadastro de alunos e instrutores (POO II, NUP2)
 
-Aplicação Java com tela em Swing e banco MySQL, para a apresentação individual de 07/12/2026
+Aplicação em Java 25 com tela em Swing e banco MySQL, para a apresentação individual de 07/12/2026
 (prof. Luiz Marcelo Freitas da Silva, UNCISAL). Aluno: José Alan de Aquino Santos.
 
 O sistema cadastra alunos (com plano e instrutor) e instrutores, e mostra um relatório com a
@@ -8,7 +8,7 @@ receita mensal prevista. Tem três abas: **Alunos**, **Instrutores** e **Relató
 
 ## Como rodar
 
-Precisa de Java 17 ou mais novo e Docker (para o MySQL).
+Precisa do Java 25 (JDK) e do Docker (para o MySQL). Os scripts escolhem o Java 25 sozinhos no Mac.
 
 ```bash
 ./iniciar-banco.sh   # sobe o MySQL 8.4 em Docker (porta 3307) e espera ficar pronto
