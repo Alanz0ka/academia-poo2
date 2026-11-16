@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Todos os testes" type="JUnit" factoryName="JUnit">
+    <module name="academia" />
+    <option name="PACKAGE_NAME" value="academia" />
+    <option name="TEST_OBJECT" value="package" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

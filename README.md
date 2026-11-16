@@ -6,27 +6,24 @@ Aplicação em Java 25 com tela em Swing e banco MySQL, para a apresentação in
 O sistema cadastra alunos (com plano e instrutor) e instrutores, e mostra um relatório com a
 receita mensal prevista. Tem três abas: **Alunos**, **Instrutores** e **Relatório**.
 
-## Como rodar
+## Como rodar no IntelliJ IDEA
 
-Precisa do Java 25 (JDK) e do Docker (para o MySQL). Os scripts escolhem o Java 25 sozinhos no Mac.
+Precisa do JDK 25 e do Docker (para o MySQL). O projeto é Maven, então o IntelliJ baixa o driver do MySQL e o JUnit sozinho.
 
-```bash
-./iniciar-banco.sh   # sobe o MySQL 8.4 em Docker (porta 3307) e espera ficar pronto
-./build.sh           # compila para a pasta out/
-./run.sh             # abre a tela
-```
+1. No terminal, suba o banco: `./iniciar-banco.sh` (ou use a configuração **Iniciar banco (Docker)** do IntelliJ).
+2. No IntelliJ: **File > Open** e escolha a pasta do projeto (ou o `pom.xml`). Aguarde a importação do Maven.
+3. Se o IntelliJ pedir um SDK: **File > Project Structure > Project > SDK** e escolha o Java 25 (Corretto 25).
+4. Rode a configuração **Academia (abrir tela)** (já vem pronta em `.run/`, no canto superior direito).
 
-O contêiner roda como usuário `mysql` (não root), sem nenhuma capability, com `no-new-privileges`, limite de memória e porta só em
-`127.0.0.1`. Na primeira execução o programa cria as tabelas `instrutor` e `aluno` e cadastra 3 instrutores
-e 5 alunos de exemplo. Para usar outro MySQL, defina as variáveis `ACADEMIA_DB_URL`,
-`ACADEMIA_DB_USER` e `ACADEMIA_DB_PASS` antes de rodar. O `build.sh` baixa o driver JDBC do MySQL
-(`mysql-connector-j` 9.7.0, Maven Central, hash SHA-1 conferido) na primeira vez.
+Na primeira execução o programa cria as tabelas `instrutor` e `aluno` e cadastra 3 instrutores e 5 alunos de exemplo.
+O contêiner do MySQL roda como usuário `mysql` (não root), sem nenhuma capability, com `no-new-privileges`, limite de memória
+e porta só em `127.0.0.1`. Para usar outro MySQL, defina `ACADEMIA_DB_URL`, `ACADEMIA_DB_USER` e `ACADEMIA_DB_PASS`
+(em **Edit Configurations > Environment variables**).
 
-Testes (sem JUnit, cada linha mostra OK ou FALHA; os de banco usam o MySQL e limpam o que criam):
+**Testes:** rode a configuração **Todos os testes** (JUnit 5, 16 testes). Os 5 que usam o MySQL são ignorados, sem falhar,
+se o banco não estiver no ar, e cada um apaga o que criou.
 
-```bash
-java -cp "out:lib/*" TesteAcademia
-```
+Sem IDE, com o Maven instalado: `mvn test` e `mvn exec:java` (abre a tela).
 
 ## Onde está cada requisito do professor
 
@@ -44,15 +41,18 @@ java -cp "out:lib/*" TesteAcademia
 ## Estrutura
 
 ```
-src/academia/
-  Main.java                 abre o banco e a tela
-  modelo/                   Pessoa (abstrata), Aluno, Instrutor, Plano (enum), Cobravel (interface)
-  dao/                      Crud (interface), AlunoDAO, InstrutorDAO, Conexao, BancoDeDados
-  excecao/                  AcademiaException, DadosInvalidosException
-  util/Validador.java       validação de nome, CPF (com dígito verificador) e telefone
-  tela/                     TelaPrincipal, PainelAlunos, PainelInstrutores, PainelRelatorio
-teste/TesteAcademia.java    testes
-prints/                     as três abas rodando
+pom.xml                      Maven (Java 25, driver MySQL, JUnit 5)
+.run/                        configurações de execução do IntelliJ (tela, testes, banco)
+iniciar-banco.sh             sobe o MySQL em Docker
+src/main/java/academia/
+  Main.java                  abre o banco e a tela
+  modelo/                    Pessoa (abstrata), Aluno, Instrutor, Plano (enum), Cobravel (interface)
+  dao/                       Crud (interface), AlunoDAO, InstrutorDAO, Conexao, BancoDeDados
+  excecao/                   AcademiaException, DadosInvalidosException
+  util/Validador.java        validação de nome, CPF (com dígito verificador) e telefone
+  tela/                      TelaPrincipal, PainelAlunos, PainelInstrutores, PainelRelatorio
+src/test/java/academia/      ValidadorTest, ModeloTest, BancoTest
+prints/                      as três abas rodando
 ```
 
 ## Roteiro de demonstração (uns 5 minutos)
